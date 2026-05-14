@@ -38,7 +38,7 @@ export default function PersonEdit() {
 
       <div className="flex items-center gap-3">
         <div
-          className={`${hoursInput ? 'p-0.5 rounded-full border-2 border-violet-500' : 'p-0.75'}`}
+          className={`${hoursInput ? 'p-0.5 rounded-full border-2 border-[#3D06D7]' : 'p-0.75'}`}
         >
           <img src="/photo.png" alt={person.name} className="rounded-full object-cover " />
         </div>
