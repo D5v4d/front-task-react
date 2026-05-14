@@ -14,7 +14,7 @@ export default function PersonEdit() {
 
     if (!person) return
 
-    if (nextValue !== '') {
+    if (nextValue.trim() !== '') {
       updatePersonAge(person.id, Number(nextValue))
     }
   }

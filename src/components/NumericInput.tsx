@@ -8,6 +8,8 @@ interface NumericInputProps {
   className?: string
 }
 
+const MIN_WIDTH_PX = 72;
+
 function formatWithSpaces(value: string): string {
   if (!value) return ''
   return value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
@@ -17,13 +19,14 @@ function toDigits(value: string): string {
   return value.replace(/\D/g, '')
 }
 
+
 export default function NumericInput({
   id,
   value,
   onChange,
   onBlur,
   placeholder,
-  minWidthPx = 72,
+  minWidthPx = MIN_WIDTH_PX,
   className,
 }: NumericInputProps) {
   const normalizedValue = toDigits(value)

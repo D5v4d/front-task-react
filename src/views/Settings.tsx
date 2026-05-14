@@ -9,13 +9,19 @@ export default function Settings() {
 
   const handleMinimumAgeChange = (nextValue: string) => {
     setMinimumAgeInput(nextValue)
-    if (nextValue !== '') {
+    if (nextValue.trim() !== '') {
       setMinimumAgeInMonths(Number(nextValue))
     }
   }
 
+  const resetMinimumAge = () => {
+    if (minimumAgeInput.trim() === '') {
+      setMinimumAgeInMonths(0)
+    }
+  }
+  
   return (
-    <div className="flex w-[397px] flex-col gap-4">
+    <div className="flex w-99.25 flex-col gap-4">
       <Link to="/" className="text-violet-600 hover:underline text-sm">
         &larr; Back
       </Link>
@@ -34,11 +40,7 @@ export default function Settings() {
             id="min-age-input"
             value={minimumAgeInput}
             onChange={handleMinimumAgeChange}
-            onBlur={() => {
-              if (minimumAgeInput === '') {
-                setMinimumAgeInMonths(0)
-              }
-            }}
+            onBlur={resetMinimumAge}
             className={`border rounded-lg px-3 py-2 text-2xl outline-none ${minimumAgeInput ? 'border-[#906FEE] border-2' : 'border-[#CFCADF]'}`}
             placeholder="0"
           />
