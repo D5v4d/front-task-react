@@ -1,10 +1,23 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import NumericInput from '@/components/NumericInput'
 import { useStore } from '@/store'
 
 export default function PersonEdit() {
   const { id } = useParams<{ id: string }>()
   const person = useStore((state) => state.people.find((p) => p.id === Number(id)))
   const updatePersonAge = useStore((state) => state.updatePersonAge)
+  const [hoursInput, setHoursInput] = useState(person ? String(person.ageInHours) : '')
+
+  const handleHoursChange = (nextValue: string) => {
+    setHoursInput(nextValue)
+
+    if (!person) return
+
+    if (nextValue.trim() !== '') {
+      updatePersonAge(person.id, Number(nextValue))
+    }
+  }
 
   if (!person) {
     return (
@@ -24,25 +37,29 @@ export default function PersonEdit() {
       </Link>
 
       <div className="flex items-center gap-3">
-        <img
-          src="/img.png"
-          alt={person.name}
-          className="w-14 h-14 rounded-full border-2 border-violet-500 object-cover"
-        />
+        <div
+          className={`${hoursInput ? 'p-0.5 rounded-full border-2 border-[#3D06D7]' : 'p-0.75'}`}
+        >
+          <img src="/photo.png" alt={person.name} className="rounded-full object-cover " />
+        </div>
+
         <div>
-          <label htmlFor="hours-input" className="block text-sm font-bold tracking-wide text-gray-700">
+          <label
+            htmlFor="hours-input"
+            className={`block text-sm font-bold tracking-wide ${hoursInput ? 'text-[#3D06D7]' : 'text-[#1E0E4C]'}`}
+          >
             {person.name.toUpperCase()} IS
           </label>
           <div className="flex items-center gap-2">
-            <input
+            <NumericInput
               id="hours-input"
-              type="text"
-              value={person.ageInHours}
-              onChange={(e) => updatePersonAge(person.id, Number(e.target.value) || 0)}
-              className="border border-gray-300 rounded px-2 py-1 text-lg outline-none"
+              value={hoursInput}
+              onChange={handleHoursChange}
               placeholder="0"
+              minWidthPx={72}
+              className={`border rounded-lg px-3 py-2 text-2xl outline-none ${hoursInput ? 'border-[#906FEE] border-2' : 'border-[#CFCADF] '}`}
             />
-            <span className="text-gray-600">hours old</span>
+            <span className="text-[#1E0E4C] text-xl">hours old</span>
           </div>
         </div>
       </div>

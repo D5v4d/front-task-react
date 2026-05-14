@@ -1,12 +1,27 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useStore } from '@/store'
+import NumericInput from '@/components/NumericInput'
 
 export default function Settings() {
-  const minimumAgeInMonths = useStore((state) => state.minimumAgeInMonths)
   const setMinimumAgeInMonths = useStore((state) => state.setMinimumAgeInMonths)
+  const [minimumAgeInput, setMinimumAgeInput] = useState('')
 
+  const handleMinimumAgeChange = (nextValue: string) => {
+    setMinimumAgeInput(nextValue)
+    if (nextValue.trim() !== '') {
+      setMinimumAgeInMonths(Number(nextValue))
+    }
+  }
+
+  const resetMinimumAge = () => {
+    if (minimumAgeInput.trim() === '') {
+      setMinimumAgeInMonths(0)
+    }
+  }
+  
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-99.25 flex-col gap-4">
       <Link to="/" className="text-violet-600 hover:underline text-sm">
         &larr; Back
       </Link>
@@ -14,16 +29,19 @@ export default function Settings() {
       <h1 className="text-xl font-bold text-gray-700">Settings</h1>
 
       <div>
-        <label htmlFor="min-age-input" className="block text-sm font-bold tracking-wide text-gray-700">
+        <label
+          htmlFor="min-age-input"
+          className="block text-sm font-bold tracking-wide text-gray-700"
+        >
           MINIMUM AGE
         </label>
         <div className="flex items-center gap-2">
-          <input
+          <NumericInput
             id="min-age-input"
-            type="text"
-            value={minimumAgeInMonths}
-            onChange={(e) => setMinimumAgeInMonths(Number(e.target.value) || 0)}
-            className="border border-gray-300 rounded px-2 py-1 text-lg outline-none"
+            value={minimumAgeInput}
+            onChange={handleMinimumAgeChange}
+            onBlur={resetMinimumAge}
+            className={`border rounded-lg px-3 py-2 text-2xl outline-none ${minimumAgeInput ? 'border-[#906FEE] border-2' : 'border-[#CFCADF]'}`}
             placeholder="0"
           />
           <span className="text-gray-600">months</span>
